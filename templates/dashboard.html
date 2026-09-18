@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard - Dream Company Analytics</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+
+<div id="toast-container" class="toast-container"></div>
+
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-logo">✦ Dream Company Analytics</span>
+      <button class="sidebar-collapse-btn" id="sidebar-toggle">☰</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-section="overview-section">📊 Dashboard</a>
+      <a href="#" class="nav-item" data-section="dataset-section">🗂️ Dataset</a>
+      <a href="#" class="nav-item" data-section="statistics-section">📈 Statistics</a>
+      <a href="#" class="nav-item" data-section="visualizations-section">🎨 Visualizations</a>
+      <a href="#" class="nav-item" data-section="reports-section">📄 Reports</a>
+      <a href="#" class="nav-item" data-section="settings-section">⚙️ Settings</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">Taranpreet Kaur</div>
+      <div class="sidebar-reg">12506996</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <div class="topbar">
+      <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+      <div class="topbar-spacer"></div>
+      <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">🌙</button>
+      <a href="/" class="btn btn-outline btn-sm">New Dataset</a>
+    </div>
+
+    <!-- OVERVIEW / DASHBOARD -->
+    <section id="overview-section" class="content-section active">
+      <div class="dash-header">
+        <h1 id="dash-company-name">LOADING...</h1>
+        <p id="dash-subtitle-line" class="dash-subtitle-type">Company Analytics Dashboard</p>
+        <p class="dash-description">Explore your company's data through statistics and visualizations.</p>
+      </div>
+
+      <div class="summary-cards" id="summary-cards">
+        <div class="summary-card">
+          <div class="summary-card-label">Rows</div>
+          <div class="summary-card-value" id="card-rows">-</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-label">Columns</div>
+          <div class="summary-card-value" id="card-columns">-</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-label">Numeric Columns</div>
+          <div class="summary-card-value" id="card-numeric">-</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-label">Missing Values</div>
+          <div class="summary-card-value" id="card-missing">-</div>
+        </div>
+      </div>
+
+      <div class="quick-links">
+        <div class="quick-link-card" data-jump="statistics-section">
+          <div class="quick-icon">📈</div>
+          <h3>Statistics</h3>
+          <p>Mean, median, mode, variance and more, computed instantly.</p>
+        </div>
+        <div class="quick-link-card" data-jump="visualizations-section">
+          <div class="quick-icon">🎨</div>
+          <h3>Visualizations</h3>
+          <p>Box plots, violin plots, heatmaps and more, rendered live.</p>
+        </div>
+        <div class="quick-link-card" data-jump="dataset-section">
+          <div class="quick-icon">🗂️</div>
+          <h3>Data Explorer</h3>
+          <p>Search, browse and paginate through your raw dataset.</p>
+        </div>
+        <div class="quick-link-card" data-jump="reports-section">
+          <div class="quick-icon">📄</div>
+          <h3>Reports</h3>
+          <p>Download statistics and generate a summary report.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATASET / DATA EXPLORER -->
+    <section id="dataset-section" class="content-section">
+      <h2 class="section-title">Data Explorer</h2>
+
+      <div class="explorer-toolbar">
+        <input type="text" id="dataset-search" class="text-input" placeholder="Search rows..." />
+        <div class="explorer-meta" id="explorer-meta">- rows &middot; - columns</div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table" id="data-table">
+          <thead id="data-table-head"></thead>
+          <tbody id="data-table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination" id="pagination">
+        <button class="btn btn-outline btn-sm" id="prev-page-btn">Previous</button>
+        <span id="page-indicator">Page 1</span>
+        <button class="btn btn-outline btn-sm" id="next-page-btn">Next</button>
+      </div>
+    </section>
+
+    <!-- STATISTICS -->
+    <section id="statistics-section" class="content-section">
+      <h2 class="section-title">Statistics</h2>
+
+      <div class="stat-controls">
+        <label class="control-label">Columns</label>
+        <select id="stat-column-select" class="text-input" multiple size="4"></select>
+        <p class="control-hint">Leave empty to use all numeric columns.</p>
+      </div>
+
+      <div class="stat-buttons" id="stat-buttons">
+        <button class="stat-btn" data-fn="mean">Mean</button>
+        <button class="stat-btn" data-fn="median">Median</button>
+        <button class="stat-btn" data-fn="mode">Mode</button>
+        <button class="stat-btn" data-fn="min">Minimum</button>
+        <button class="stat-btn" data-fn="max">Maximum</button>
+        <button class="stat-btn" data-fn="sum">Sum</button>
+        <button class="stat-btn" data-fn="count">Count</button>
+        <button class="stat-btn" data-fn="variance">Variance</button>
+        <button class="stat-btn" data-fn="std">Standard Deviation</button>
+        <button class="stat-btn" data-fn="skew">Skewness</button>
+        <button class="stat-btn" data-fn="kurt">Kurtosis</button>
+        <button class="stat-btn" data-fn="describe">Describe</button>
+      </div>
+
+      <div id="stat-result" class="stat-result hidden">
+        <div class="stat-result-header">
+          <h3 id="stat-result-title">-</h3>
+          <button class="link-btn" id="explain-stat-btn">✨ Explain This Result</button>
+        </div>
+        <p id="stat-explanation" class="stat-explanation"></p>
+        <div id="stat-explain-box" class="explain-box hidden"></div>
+        <div class="table-wrap">
+          <table class="data-table" id="stat-table">
+            <thead id="stat-table-head"></thead>
+            <tbody id="stat-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="stat-empty" class="empty-state">Choose a statistic above to see results.</div>
+    </section>
+
+    <!-- VISUALIZATIONS -->
+    <section id="visualizations-section" class="content-section">
+      <h2 class="section-title">Visualizations</h2>
+
+      <div class="viz-controls">
+        <div class="viz-control-group">
+          <label class="control-label">Chart Type</label>
+          <select id="chart-type-select" class="text-input">
+            <option value="box">Box Plot</option>
+            <option value="boxen">Boxen Plot</option>
+            <option value="strip">Strip Plot</option>
+            <option value="swarm">Swarm Plot</option>
+            <option value="bar">Bar Plot</option>
+            <option value="point">Point Plot</option>
+            <option value="violin">Violin Plot</option>
+            <option value="heatmap">Heatmap</option>
+          </select>
+        </div>
+
+        <div class="viz-control-group" id="viz-columns-group">
+          <label class="control-label">Numeric Columns</label>
+          <select id="viz-column-select" class="text-input" multiple size="4"></select>
+        </div>
+
+        <div class="viz-control-group hidden" id="viz-xy-group">
+          <label class="control-label">X Axis</label>
+          <select id="viz-x-select" class="text-input"></select>
+          <label class="control-label">Y Axis (numeric)</label>
+          <select id="viz-y-select" class="text-input"></select>
+        </div>
+
+        <button class="btn btn-primary" id="generate-chart-btn">Generate Chart</button>
+      </div>
+
+      <div id="chart-loading" class="loading-row hidden">
+        <div class="spinner"></div><span>Generating chart...</span>
+      </div>
+
+      <div id="chart-result" class="chart-result hidden">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h3 id="chart-title">-</h3>
+            <a class="btn btn-outline btn-sm" id="download-chart-btn" href="/download-chart">Download Chart</a>
+          </div>
+          <div class="chart-image-wrap">
+            <img id="chart-image" src="" alt="Generated chart" />
+          </div>
+        </div>
+      </div>
+
+      <div id="chart-empty" class="empty-state">Choose a chart type and click Generate Chart.</div>
+    </section>
+
+    <!-- REPORTS -->
+    <section id="reports-section" class="content-section">
+      <h2 class="section-title">Reports</h2>
+      <div class="reports-grid">
+        <div class="report-card">
+          <h3>📊 Statistics CSV</h3>
+          <p>Download a full describe() summary of all numeric columns as CSV.</p>
+          <a class="btn btn-primary btn-block" href="/download-statistics">Download Statistics CSV</a>
+        </div>
+        <div class="report-card">
+          <h3>🖼️ Last Chart</h3>
+          <p>Download the most recently generated chart as a PNG image.</p>
+          <a class="btn btn-primary btn-block" href="/download-chart">Download Chart</a>
+        </div>
+        <div class="report-card">
+          <h3>📄 Summary Report</h3>
+          <p>Generate a plain-text summary report of this dataset.</p>
+          <a class="btn btn-primary btn-block" href="/generate-summary-report">Generate Summary Report</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings-section" class="content-section">
+      <h2 class="section-title">Settings</h2>
+      <div class="settings-card">
+        <div class="settings-row">
+          <span>Appearance</span>
+          <button class="btn btn-outline btn-sm" id="settings-theme-toggle">Toggle Light / Dark Mode</button>
+        </div>
+        <div class="settings-row">
+          <span>Current Dataset</span>
+          <span id="settings-source-name">-</span>
+        </div>
+        <div class="settings-row">
+          <span>Load a Different Dataset</span>
+          <a href="/" class="btn btn-outline btn-sm">Go to Upload Page</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

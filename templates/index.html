@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dream Company Analytics</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="landing-body">
+
+<div id="toast-container" class="toast-container"></div>
+
+<button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">🌙</button>
+
+<div class="landing-wrap">
+
+  <header class="hero">
+    <div class="hero-badge">✦ Dream Company Analytics</div>
+    <h1 class="hero-title">DREAM COMPANY ANALYTICS</h1>
+    <p class="hero-tagline">"Analyze Any Company. Your Way."</p>
+    <p class="hero-sub">
+      Upload your dataset or connect a supported company Screener page to explore
+      statistics, trends and visualizations.
+    </p>
+  </header>
+
+  <section class="source-section">
+    <h2 class="section-heading">CHOOSE YOUR DATA SOURCE</h2>
+
+    <div class="source-cards">
+
+      <!-- CARD 1: CSV UPLOAD -->
+      <div class="source-card" id="csv-card">
+        <div class="source-icon">📁</div>
+        <h3>CSV DATASET</h3>
+        <p>Upload your company's CSV file.</p>
+
+        <div id="dropzone" class="dropzone">
+          <p class="dropzone-text">DROP YOUR CSV HERE</p>
+          <p class="dropzone-or">or</p>
+          <button class="btn btn-primary" id="choose-file-btn">Choose CSV File</button>
+          <input type="file" id="file-input" accept=".csv" hidden />
+        </div>
+
+        <div id="file-info" class="file-info hidden">
+          <div class="file-info-row"><span>File:</span><strong id="file-name-display">-</strong></div>
+          <div class="file-info-row"><span>Company:</span><strong id="company-name-display">-</strong></div>
+          <button class="link-btn" id="edit-company-btn">Edit Company Name</button>
+          <div class="file-info-row status-row"><span class="status-badge success" id="file-status">✓ Dataset Ready</span></div>
+          <button class="btn btn-primary btn-block" id="analyze-dataset-btn">Analyze Dataset</button>
+        </div>
+
+        <div id="csv-loading" class="loading-row hidden">
+          <div class="spinner"></div><span>Processing your file...</span>
+        </div>
+      </div>
+
+      <!-- CARD 2: SCREENER LINK -->
+      <div class="source-card" id="url-card">
+        <div class="source-icon">🔗</div>
+        <h3>SCREENER LINK</h3>
+        <p>Analyze a supported public Screener company page.</p>
+
+        <div class="url-input-group">
+          <input type="text" id="screener-url-input" class="text-input"
+                 placeholder="https://www.screener.in/company/IDBI/" />
+          <button class="btn btn-secondary btn-block" id="analyze-url-btn">Analyze URL</button>
+        </div>
+
+        <div id="url-loading" class="loading-row hidden">
+          <div class="spinner"></div><span>Retrieving Screener data...</span>
+        </div>
+
+        <div id="url-sections" class="url-sections hidden">
+          <p class="section-label">Select a data table:</p>
+          <div id="section-list" class="section-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  {% if no_dataset %}
+  <div class="empty-state-banner">
+    No dataset is currently loaded. Please upload a CSV or analyze a Screener URL to view the dashboard.
+  </div>
+  {% endif %}
+
+  <footer class="landing-footer">
+    <p>Taranpreet Kaur &middot; 12506996 &middot; Lovely Professional University</p>
+  </footer>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
